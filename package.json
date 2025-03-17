@@ -13,13 +13,16 @@
     "start": "NODE_ENV=production tsx src/server/main.ts",
     "build": "vite build",
     "test": "playwright test",
-    "test:trace": "playwright test --trace on"
+    "test:trace": "playwright test --trace on",
+    "db:create": "tsx src/scripts/dbCreate.ts"
   },
   "dependencies": {
     "tsx": "^4.19.3",
     "express": "^5.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "vite-express": "^0.20.0"
   },
   "devDependencies": {
