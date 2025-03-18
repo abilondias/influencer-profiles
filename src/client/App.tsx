@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router"
 import "./App.css"
+import { Notifications } from "./components/Notifications"
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
       <div className="container-sm content">
         <div className="row">
           <div className="col">
+            <Notifications duration={5000} />
+
             <Outlet />
           </div>
         </div>

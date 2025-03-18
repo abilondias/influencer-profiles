@@ -7,10 +7,12 @@ import {
 } from "react"
 import { Account, SocialMedia } from "."
 import { useLoaderData, useNavigate } from "react-router"
+import { useNotify } from "../../contexts/NotificationContext"
 
 const InfluencerForm = () => {
   const { socialMedias } = useLoaderData() as { socialMedias: SocialMedia[] }
   const navigate = useNavigate()
+  const notify = useNotify()
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -97,16 +99,16 @@ const InfluencerForm = () => {
         })
 
         const parsed = await response.json()
-        if (!response.ok && response.status !== 500) {
+        if (!response.ok) {
           setError(parsed)
           return
         }
 
-        navigate("/influencers", {
-          state: {
-            highlight: parsed.id,
-          },
+        notify({
+          message: "Influencer created.",
+          level: "success",
         })
+        navigate("/influencers")
       } catch (error) {
         setError({ message: "Unexpected request error", details: [] })
         console.log(error)
@@ -132,7 +134,9 @@ const InfluencerForm = () => {
         )}
         <div className="row">
           <div className="col-md-6">
-            <label htmlFor="first_name">First Name</label>
+            <label className="form-label" htmlFor="first_name">
+              First Name
+            </label>
             <input
               className="form-control"
               type="text"
@@ -144,7 +148,9 @@ const InfluencerForm = () => {
             />
           </div>
           <div className="col-md-6">
-            <label htmlFor="last_name">Last Name</label>
+            <label className="form-label" htmlFor="last_name">
+              Last Name
+            </label>
             <input
               className="form-control"
               type="text"
@@ -166,7 +172,9 @@ const InfluencerForm = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <p>
-                      <label htmlFor="social_media_id">Social Media</label>
+                      <label className="form-label" htmlFor="social_media_id">
+                        Social Media
+                      </label>
                       <select
                         className="form-select"
                         name="social_media_id"
@@ -185,7 +193,7 @@ const InfluencerForm = () => {
                     </p>
                   </div>
                   <div className="col-md-6">
-                    <label>Account Name</label>
+                    <label className="form-label">Account Name</label>
                     <div className="input-group">
                       <input
                         className="form-control"

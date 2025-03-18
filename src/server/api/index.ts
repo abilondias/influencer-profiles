@@ -12,7 +12,6 @@ const errorHandler: express.ErrorRequestHandler = (error, req, res, next) => {
   }
 
   if (error instanceof ZodError && "issues" in error) {
-    console.log(error)
     res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send({
       message: "Invalid payload information",
       details: error.issues.map((issue) => ({
