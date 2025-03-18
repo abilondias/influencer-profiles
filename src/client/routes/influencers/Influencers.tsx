@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router"
 import { Influencer } from "."
 import { useCallback, useState } from "react"
-import { SocialMediaIcon } from "../../components/SocialMediaIcon/SocialMediaIcon"
+import { SocialMediaIcon } from "../../components/SocialMediaIcon"
 
 export const Influencers = () => {
   const { influencers } = useLoaderData() as { influencers: Influencer[] }
