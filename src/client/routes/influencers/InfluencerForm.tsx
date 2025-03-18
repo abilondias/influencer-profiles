@@ -8,6 +8,7 @@ import {
 import { Account, SocialMedia } from "."
 import { useLoaderData, useNavigate } from "react-router"
 import { useNotify } from "../../contexts/NotificationContext"
+import { FormError, TFormError } from "../../components/FormError"
 
 const InfluencerForm = () => {
   const { socialMedias } = useLoaderData() as { socialMedias: SocialMedia[] }
@@ -19,10 +20,7 @@ const InfluencerForm = () => {
   const [accounts, setAccounts] = useState<Account[]>([
     { social_media_id: socialMedias[0].id, name: "" },
   ])
-  const [error, setError] = useState<{
-    message: string
-    details: { message?: string; field?: string }[]
-  }>()
+  const [error, setError] = useState<TFormError>()
 
   const updateFirstName = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     ev.preventDefault()
@@ -122,16 +120,8 @@ const InfluencerForm = () => {
       <h2>New Influencer</h2>
 
       <form onSubmit={handleForm}>
-        {error && error?.message !== "" && (
-          <div className="alert alert-danger">
-            <strong>{error?.message}</strong>
-            <ul>
-              {error?.details.map((detail, i) => (
-                <li key={i}>{detail?.message}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <FormError error={error} />
+
         <div className="row">
           <div className="col-md-6">
             <label className="form-label" htmlFor="first_name">
