@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
-import "./App.css"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 import { createBrowserRouter, RouterProvider } from "react-router"
 import { InfluencersRoutes } from "./routes/influencers"
