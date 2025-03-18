@@ -33,14 +33,16 @@ export const InfluencerRouter = (db: Database) => {
       .string()
       .min(2, "Last name needs to have at least 2 characters")
       .max(50, "Last name can be at most 50 characters"),
-    accounts: z.array(
-      z.object({
-        social_media_id: z.number(),
-        name: z
-          .string()
-          .min(1, "Account name needs to have at least 1 character"),
-      }),
-    ),
+    accounts: z
+      .array(
+        z.object({
+          social_media_id: z.number(),
+          name: z
+            .string()
+            .min(1, "Account name needs to have at least 1 character"),
+        }),
+      )
+      .min(1, "At least 1 account is required"),
   })
 
   router.post("/influencers", async (req, res, next) => {
