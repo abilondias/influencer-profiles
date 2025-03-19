@@ -3,6 +3,7 @@ import { Influencer } from "."
 import { MouseEvent, useCallback, useState } from "react"
 import { SocialMediaIcon } from "../../components/SocialMediaIcon"
 import { useForm } from "react-hook-form"
+import { useSocialMedias } from "../../hooks/useSocialMedias"
 
 type InfluencerSearch = {
   name: string
@@ -93,7 +94,7 @@ const InfluencerData = ({ influencers }: { influencers: Influencer[] }) => {
           <th>Id</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th></th>
+          <th style={{ width: "50px" }}></th>
         </tr>
       </thead>
       <tbody>
@@ -107,6 +108,7 @@ const InfluencerData = ({ influencers }: { influencers: Influencer[] }) => {
 
 const InfluencerRow = ({ influencer }: { influencer: Influencer }) => {
   const [showAccounts, setShowAccounts] = useState(false)
+  const { socialMediaById } = useSocialMedias()
 
   const toggleAccounts = useCallback((ev: React.MouseEvent) => {
     ev.preventDefault()
@@ -120,13 +122,9 @@ const InfluencerRow = ({ influencer }: { influencer: Influencer }) => {
         <td>{influencer.first_name}</td>
         <td>{influencer.last_name}</td>
         <td>
-          <a
-            href="#"
-            onClick={toggleAccounts}
-            style={{ textDecoration: "none" }}
-          >
+          <button className="btn btn-sm" onClick={toggleAccounts}>
             {showAccounts ? "▲" : "▼"}
-          </a>
+          </button>
         </td>
       </tr>
       <tr style={{ display: showAccounts ? "table-row" : "none" }}>
@@ -134,12 +132,17 @@ const InfluencerRow = ({ influencer }: { influencer: Influencer }) => {
           <strong>Accounts</strong>
 
           <ul className="account-list">
-            {influencer.accounts.map((account) => (
-              <li key={account.social_media_id + account.name}>
-                {/* resolve slug by id */}
-                <SocialMediaIcon slug="instagram" /> {account.name}
-              </li>
-            ))}
+            {influencer.accounts.map((account) => {
+              const sm = socialMediaById(account.social_media_id)
+              const slug = sm ? sm.slug : ""
+
+              return (
+                <li key={account.social_media_id + account.name}>
+                  <SocialMediaIcon slug={slug} />
+                  {account.name}
+                </li>
+              )
+            })}
           </ul>
         </td>
       </tr>

@@ -1,14 +1,15 @@
 import { MouseEvent, useState } from "react"
-import { Influencer, SocialMedia } from "."
-import { useLoaderData, useNavigate } from "react-router"
+import { Influencer } from "."
+import { useNavigate } from "react-router"
 import { useNotify } from "../../contexts/NotificationContext"
 import { FormError, TFormError } from "../../components/FormError"
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form"
 import { FormInput } from "../../components/FormInput"
 import { FormFieldError } from "../../components/FormInput/FormInput"
+import { useSocialMedias } from "../../hooks/useSocialMedias"
 
 const InfluencerForm = () => {
-  const { socialMedias } = useLoaderData() as { socialMedias: SocialMedia[] }
+  const { socialMedias } = useSocialMedias()
 
   const navigate = useNavigate()
   const notify = useNotify()
@@ -140,6 +141,7 @@ const InfluencerForm = () => {
                   </select>
                   <FormFieldError error={socialMediaIdError} />
                 </div>
+
                 <div className="col-md-6">
                   <FormInput
                     label="Account Name"

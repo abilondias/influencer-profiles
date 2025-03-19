@@ -18,6 +18,7 @@ export const SocialMediaIcon: FC<IconProps> = ({ slug }) => {
   const iconClass = iconClasses[slug as IconKey]
 
   if (!iconClass) {
+    console.warn(`No icon available for the provided Icon Key  "${slug}"`)
     return
   }
 

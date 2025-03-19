@@ -1,8 +1,8 @@
 import { Link, Outlet } from "react-router"
-import "./App.css"
-import { Notifications } from "./components/Notifications"
+import "./Root.css"
+import { Notifications } from "../../components/Notifications"
 
-function App() {
+export const Root = () => {
   return (
     <div className="App">
       <nav className="navbar navbar-expand bg-body-secondary">
@@ -43,4 +43,4 @@ function App() {
   )
 }
 
-export default App
+export default Root

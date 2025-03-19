@@ -42,14 +42,6 @@ const influencersLoader = async (): Promise<Influencer[]> => {
   return response.data
 }
 
-const socialMediasLoader = async (): Promise<SocialMedia[]> => {
-  const response = await fetch("/api/social_medias", {
-    method: "GET",
-  }).then((res) => res.json())
-
-  return response.data
-}
-
 export const InfluencersRoutes = [
   {
     path: "/influencers",
@@ -67,8 +59,5 @@ export const InfluencersRoutes = [
   {
     path: "/influencers/new",
     Component: InfluencerForm,
-    loader: async function () {
-      return { socialMedias: await socialMediasLoader() }
-    },
   },
 ]
