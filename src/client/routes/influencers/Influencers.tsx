@@ -1,14 +1,76 @@
-import { useLoaderData } from "react-router"
+import { useLoaderData, useNavigate, useSearchParams } from "react-router"
 import { Influencer } from "."
-import { useCallback, useState } from "react"
+import { MouseEvent, useCallback, useState } from "react"
 import { SocialMediaIcon } from "../../components/SocialMediaIcon"
+import { useForm } from "react-hook-form"
+
+type InfluencerSearch = {
+  name: string
+}
 
 export const Influencers = () => {
   const { influencers } = useLoaderData() as { influencers: Influencer[] }
+  const [qs] = useSearchParams()
+  const { register, handleSubmit, reset } = useForm<InfluencerSearch>({
+    defaultValues: {
+      name: qs.get("name") || "",
+    },
+  })
+
+  const navigate = useNavigate()
+
+  const filter = (data: InfluencerSearch) => {
+    const params = new URLSearchParams()
+    params.append("name", data.name)
+
+    navigate({
+      pathname: "/influencers",
+      search: params.toString(),
+    })
+  }
+
+  const clearFilter = (ev: MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault()
+    reset()
+    navigate({
+      pathname: "/influencers",
+    })
+  }
 
   return (
     <>
       <h2>Influencers</h2>
+
+      <div className="row mt-3 mb-3">
+        <div className="col">
+          <form onSubmit={handleSubmit(filter)} key={qs.get("name")}>
+            <div className="row row-cols-lg-auto g-1 align-items-center">
+              <div className="col-12">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Search by name"
+                  {...register("name", { required: true, min: 2 })}
+                />
+              </div>
+
+              {qs.get("name") && (
+                <div className="col-12">
+                  <button className="btn btn-danger" onClick={clearFilter}>
+                    Clear
+                  </button>
+                </div>
+              )}
+
+              <div className="col-12">
+                <button className="btn btn-success">
+                  <i className="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <InfluencerData influencers={influencers} />
     </>

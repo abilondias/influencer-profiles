@@ -1,3 +1,4 @@
+import { LoaderFunctionArgs } from "react-router"
 import { InfluencerForm } from "./InfluencerForm"
 import { Influencers } from "./Influencers"
 
@@ -22,7 +23,18 @@ export type Influencer = {
   }[]
 }
 
-const influencersLoader = async () => {
+const influencersByNameLoader = async (name: string): Promise<Influencer[]> => {
+  const qs = new URLSearchParams()
+  qs.append("name", name)
+
+  const response = await fetch(`/api/influencers?${qs}`, {
+    method: "GET",
+  }).then((res) => res.json())
+
+  return response.data
+}
+
+const influencersLoader = async (): Promise<Influencer[]> => {
   const response = await fetch("/api/influencers", { method: "GET" }).then(
     (res) => res.json(),
   )
@@ -30,7 +42,7 @@ const influencersLoader = async () => {
   return response.data
 }
 
-const socialMediasLoader = async () => {
+const socialMediasLoader = async (): Promise<SocialMedia[]> => {
   const response = await fetch("/api/social_medias", {
     method: "GET",
   }).then((res) => res.json())
@@ -42,8 +54,14 @@ export const InfluencersRoutes = [
   {
     path: "/influencers",
     Component: Influencers,
-    loader: async () => {
-      return { influencers: await influencersLoader() }
+    loader: async (loader: LoaderFunctionArgs) => {
+      const url = new URL(loader.request.url)
+      const name = url.searchParams.get("name")
+      if (!name || name === "") {
+        return { influencers: await influencersLoader() }
+      }
+
+      return { influencers: await influencersByNameLoader(name) }
     },
   },
   {
