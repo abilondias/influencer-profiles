@@ -22,6 +22,12 @@ Install dependencies
 npm i
 ```
 
+Create the database
+
+```sh
+npm run db:create
+```
+
 Start development server
 
 ```sh
