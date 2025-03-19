@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { createBrowserRouter, RouterProvider } from "react-router"
 import { InfluencersRoutes, SocialMedia } from "./routes/influencers"
 import { NotificationContextProvider } from "./contexts/NotificationContext"
+import { NotFound } from "./routes"
 
 const socialMediasLoader = async (): Promise<SocialMedia[]> => {
   const response = await fetch("/api/social_medias", {
@@ -23,7 +24,13 @@ const router = createBrowserRouter([
     loader: async () => {
       return { socialMedias: await socialMediasLoader() }
     },
-    children: [...InfluencersRoutes],
+    children: [
+      ...InfluencersRoutes,
+      {
+        path: "*",
+        Component: NotFound,
+      },
+    ],
   },
 ])
 
