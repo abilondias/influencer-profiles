@@ -66,7 +66,7 @@ export const Influencers = () => {
               )}
 
               <div className="col-12">
-                <button className="btn btn-success">
+                <button className="btn btn-success" data-testid="search-button">
                   <i className="bi bi-search"></i>
                 </button>
               </div>
