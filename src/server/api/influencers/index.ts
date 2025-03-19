@@ -3,6 +3,7 @@ import { constants as httpConstants } from "node:http2"
 import { Database } from "sqlite"
 import { InfluencerService } from "./service.js"
 import { z } from "zod"
+import { ApiError } from "../utils/http.js"
 
 export const InfluencerRouter = (db: Database) => {
   const router = Router()
@@ -47,9 +48,23 @@ export const InfluencerRouter = (db: Database) => {
 
   router.post("/influencers", async (req, res, next) => {
     try {
-      const influencer = await influencersService.create(
-        NewInfluencer.parse(req.body),
-      )
+      const payload = NewInfluencer.parse(req.body)
+
+      const accounts: { [key: number]: Set<string> } = {}
+      for (const { name, social_media_id } of payload.accounts) {
+        if (!accounts[social_media_id]) {
+          accounts[social_media_id] = new Set()
+        }
+        if (accounts[social_media_id].has(name)) {
+          throw new ApiError(
+            "Accounts on the same social media must have unique names",
+            httpConstants.HTTP_STATUS_BAD_REQUEST,
+          )
+        }
+        accounts[social_media_id].add(name)
+      }
+
+      const influencer = await influencersService.create(payload)
 
       res.status(httpConstants.HTTP_STATUS_CREATED).send(influencer)
     } catch (error) {

@@ -4,10 +4,18 @@ import { constants as httpConstants } from "node:http2"
 import type { Database } from "sqlite"
 import { InfluencerRouter } from "./influencers/index.js"
 import { SocialMediaRouter } from "./social_medias/index.js"
+import { ApiError } from "./utils/http.js"
 
 const errorHandler: express.ErrorRequestHandler = (error, req, res, next) => {
   if (res.headersSent) {
     next(error)
+    return
+  }
+
+  if (error instanceof ApiError) {
+    res.status(error.statusCode).send({
+      message: error.message,
+    })
     return
   }
 
