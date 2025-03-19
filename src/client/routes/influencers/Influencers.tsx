@@ -12,9 +12,11 @@ type InfluencerSearch = {
 export const Influencers = () => {
   const { influencers } = useLoaderData() as { influencers: Influencer[] }
   const [qs] = useSearchParams()
+  const name = qs.get("name")
+
   const { register, handleSubmit, reset } = useForm<InfluencerSearch>({
     defaultValues: {
-      name: qs.get("name") || "",
+      name: name || "",
     },
   })
 
@@ -44,18 +46,18 @@ export const Influencers = () => {
 
       <div className="row mt-3 mb-3">
         <div className="col">
-          <form onSubmit={handleSubmit(filter)} key={qs.get("name")}>
+          <form onSubmit={handleSubmit(filter)} key={name}>
             <div className="row row-cols-lg-auto g-1 align-items-center">
               <div className="col-12">
                 <input
                   className="form-control"
                   type="text"
                   placeholder="Search by name"
-                  {...register("name", { required: true, min: 2 })}
+                  {...register("name", { required: true })}
                 />
               </div>
 
-              {qs.get("name") && (
+              {name && (
                 <div className="col-12">
                   <button className="btn btn-danger" onClick={clearFilter}>
                     Clear
@@ -80,11 +82,11 @@ export const Influencers = () => {
 
 const InfluencerData = ({ influencers }: { influencers: Influencer[] }) => {
   if (!influencers) {
-    return <>Failed to load influencers</>
+    return <p>Failed to load influencers</p>
   }
 
   if (influencers.length === 0) {
-    return <>No influencers to display</>
+    return <p>No influencers to display</p>
   }
 
   return (

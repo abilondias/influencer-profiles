@@ -50,18 +50,21 @@ export const InfluencerRouter = (db: Database) => {
     try {
       const payload = NewInfluencer.parse(req.body)
 
+      // check for equal account names for the same social media
       const accounts: { [key: number]: Set<string> } = {}
       for (const { name, social_media_id } of payload.accounts) {
         if (!accounts[social_media_id]) {
           accounts[social_media_id] = new Set()
         }
-        if (accounts[social_media_id].has(name)) {
-          throw new ApiError(
-            "Accounts on the same social media must have unique names",
-            httpConstants.HTTP_STATUS_BAD_REQUEST,
-          )
+        if (!accounts[social_media_id].has(name)) {
+          accounts[social_media_id].add(name)
+          continue
         }
-        accounts[social_media_id].add(name)
+
+        throw new ApiError(
+          "Accounts on the same social media must have unique names",
+          httpConstants.HTTP_STATUS_BAD_REQUEST,
+        )
       }
 
       const influencer = await influencersService.create(payload)

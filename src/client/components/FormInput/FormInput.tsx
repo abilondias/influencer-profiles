@@ -20,7 +20,9 @@ export const FormInput: FC<FormInputProps> = (props) => {
     <div>
       <label className="form-label">{label}</label>
       <input
-        className={`form-control ${error ? "is-invalid" : ""} ${className}`}
+        className={`form-control ${error ? "is-invalid" : ""} ${
+          className ? className : ""
+        }`}
         type="text"
         placeholder="John"
         {...remaining}

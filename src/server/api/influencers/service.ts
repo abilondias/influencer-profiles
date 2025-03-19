@@ -60,7 +60,7 @@ export class InfluencerService {
     `
 
     const influencersData: InfluencerData[] = await this.db.all(query, [
-      `${name}%`,
+      `%${name}%`,
     ])
 
     return this.formatRows(influencersData)
