@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import { NotificationContextProvider } from "./contexts/NotificationContext"
-import { router } from "./routes"
+import { router } from "./pages"
 import { RouterProvider } from "react-router"
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

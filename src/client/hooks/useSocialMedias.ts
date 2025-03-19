@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "react-router"
-import { SocialMedia } from "../routes/influencers"
+import { SocialMedia } from "../pages/influencers"
 import { useMemo } from "react"
 
 export const useSocialMedias = () => {
