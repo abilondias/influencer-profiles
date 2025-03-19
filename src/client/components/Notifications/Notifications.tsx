@@ -32,8 +32,10 @@ export const Notifications: FC<NotificationsProps> = ({ duration }) => {
 
   return (
     <>
-      <div className={`alert alert-${notification.level}`} role="alert">
-        {notification.message}
+      <div className="position-fixed bottom-0 start-0 p-4">
+        <div className={`alert alert-${notification.level}`}>
+          {notification.message}
+        </div>
       </div>
     </>
   )
